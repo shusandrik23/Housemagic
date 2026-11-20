@@ -80,42 +80,55 @@ class _MiniTaskCardState extends State<MiniTaskCard> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(task.emoji, style: const TextStyle(fontSize: 36)),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Мини-задача дня · ${task.minutes} мин',
-                    style: const TextStyle(color: Pen.red, fontWeight: FontWeight.w700),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(task.emoji, style: const TextStyle(fontSize: 36)),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Мини-задача дня · ${task.minutes} мин',
+                        style: const TextStyle(color: Pen.red, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        task.title,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: done ? Pen.pencil : Pen.blue,
+                          decoration: done ? TextDecoration.lineThrough : null,
+                          decorationColor: Pen.red,
+                          decorationThickness: 2,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    task.title,
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: done ? Pen.pencil : Pen.blue,
-                      decoration: done ? TextDecoration.lineThrough : null,
-                      decorationColor: Pen.red,
-                      decorationThickness: 2,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            done
-                ? const Text('✅', style: TextStyle(fontSize: 28))
-                : FilledButton(
-                    key: const ValueKey('mini-task-done'),
-                    style: FilledButton.styleFrom(backgroundColor: Pen.green),
-                    onPressed: _busy ? null : () => _done(task),
-                    child: Text('Сделано  +${DailyRewards.miniTask}'),
-                  ),
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: done
+                  ? const Text(
+                      '✅ Сделано',
+                      style: TextStyle(color: Pen.green, fontWeight: FontWeight.w700),
+                    )
+                  : FilledButton.icon(
+                      key: const ValueKey('mini-task-done'),
+                      style: FilledButton.styleFrom(backgroundColor: Pen.green),
+                      onPressed: _busy ? null : () => _done(task),
+                      icon: const Icon(Icons.check),
+                      label: Text('Сделано  +${DailyRewards.miniTask} 🔘'),
+                    ),
+            ),
           ],
         ),
       ),
