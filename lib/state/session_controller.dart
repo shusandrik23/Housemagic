@@ -229,7 +229,15 @@ class SessionController extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    final h = Household.fromParts(id: fid, family: family, ext: _ext);
+    final h = Household.fromParts(
+      id: fid,
+      family: family,
+      ext: _ext,
+      kidsHaveHabits: _kids.values.any((k) {
+        final habits = k['habits'];
+        return habits is List && habits.isNotEmpty;
+      }),
+    );
     household = h;
     members = [
       for (final e in _familyMembers.entries)

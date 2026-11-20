@@ -4,6 +4,7 @@ import 'package:clean_page/core/age_group.dart';
 import 'package:clean_page/core/codes.dart';
 import 'package:clean_page/core/shopping_logic.dart';
 import 'package:clean_page/core/streak.dart';
+import 'package:clean_page/models/household.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -115,6 +116,46 @@ void main() {
     test('пропуск → заново', () {
       expect(Streak.next(lastDay: '2026-11-10', current: 7, now: now), 1);
       expect(Streak.next(lastDay: null, current: 0, now: now), 1);
+    });
+  });
+
+  group('Автономность', () {
+    test('семья, созданная в Чистом Листе, не упоминает YouBoost', () {
+      final h = Household.fromParts(
+        id: 'f',
+        family: const {'name': 'Дом', 'owner': 'mom', 'rewards': [], 'challenges': []},
+        ext: const {'createdIn': 'cleanpage'},
+      );
+      expect(h.usesYouBoost, isFalse);
+    });
+
+    test('признаки YouBoost включают подсказки об общей семье', () {
+      expect(
+        Household.fromParts(id: 'f', family: const {'owner': 'x'}, ext: null).usesYouBoost,
+        isTrue,
+      );
+      expect(
+        Household.fromParts(
+          id: 'f',
+          family: const {
+            'owner': 'x',
+            'rewards': [
+              {'name': 'Кино'},
+            ],
+          },
+          ext: const {'createdIn': 'cleanpage'},
+        ).usesYouBoost,
+        isTrue,
+      );
+      expect(
+        Household.fromParts(
+          id: 'f',
+          family: const {'owner': 'x'},
+          ext: const {'createdIn': 'cleanpage'},
+          kidsHaveHabits: true,
+        ).usesYouBoost,
+        isTrue,
+      );
     });
   });
 }

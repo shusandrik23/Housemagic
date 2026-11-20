@@ -52,6 +52,7 @@ class HouseholdRepository {
     //    был родителем семьи, поэтому — отдельной записью после первой).
     await configureHousehold(
       fid: fid,
+      createdIn: 'cleanpage',
       uid: ownerUid,
       memberName: ownerName,
       rooms: rooms,
@@ -63,8 +64,11 @@ class HouseholdRepository {
   }
 
   /// Настройка Чистого Листа для семьи — в том числе созданной в YouBoost.
+  /// [createdIn]: `'cleanpage'`, если семья создана в Чистом Листе,
+  /// `'youboost'`, если её создали в YouBoost, а здесь только настроили.
   Future<void> configureHousehold({
     required String fid,
+    String createdIn = 'youboost',
     required String uid,
     required String memberName,
     String? householdName,
@@ -85,6 +89,7 @@ class HouseholdRepository {
       'inviteCodeExpires': null,
       'modifiers': modifiers,
       'rooms': rooms,
+      'createdIn': createdIn,
       'createdAt': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
     if (householdName != null && householdName.trim().isNotEmpty) {

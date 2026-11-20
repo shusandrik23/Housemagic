@@ -57,6 +57,7 @@ void main() {
       final ext = (await db.doc('households/$fid').get()).data()!;
       expect(ext['rooms'], ['Кухня', 'Ванная']);
       expect(ext['modifiers'], ['cat']);
+      expect(ext['createdIn'], 'cleanpage');
       expect(ext['parentPinHash'], Codes.hashPin('1234', salt: fid));
 
       final stats = (await db.doc('households/$fid/members/mom').get()).data()!;

@@ -13,6 +13,7 @@ class Household {
     required this.modifiers,
     required this.rooms,
     required this.isConfigured,
+    this.usesYouBoost = false,
   });
 
   final String id;
@@ -28,6 +29,10 @@ class Household {
   /// (нет документа `households/{fid}`).
   final bool isConfigured;
 
+  /// Семьёй пользуются и в YouBoost. Только тогда интерфейс упоминает
+  /// YouBoost. Тот, у кого установлен один Чистый Лист, этих подсказок не видит.
+  final bool usesYouBoost;
+
   bool get hasPin => (parentPinHash ?? '').isNotEmpty;
 
   bool get hasActiveInvite =>
@@ -39,8 +44,11 @@ class Household {
     required String id,
     required Map<String, dynamic> family,
     Map<String, dynamic>? ext,
+    bool kidsHaveHabits = false,
   }) {
     final e = ext ?? const <String, dynamic>{};
+    final rewards = family['rewards'];
+    final challenges = family['challenges'];
     final familyName = family['name'] as String? ?? '';
     final extName = e['name'] as String? ?? '';
     return Household(
@@ -53,6 +61,14 @@ class Household {
       modifiers: readStringList(e['modifiers']),
       rooms: readStringList(e['rooms']),
       isConfigured: ext != null,
+      // Признаки YouBoost: семья создана там, есть награды/вызовы YouBoost
+      // или у детей заведены привычки.
+      usesYouBoost:
+          ext == null ||
+          e['createdIn'] == 'youboost' ||
+          (rewards is List && rewards.isNotEmpty) ||
+          (challenges is List && challenges.isNotEmpty) ||
+          kidsHaveHabits,
     );
   }
 }

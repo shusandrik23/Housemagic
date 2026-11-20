@@ -115,7 +115,7 @@ class _CodeEntryScreenState extends State<CodeEntryScreen> {
             children: [
               const PenTitle('Введите код (6 символов)'),
               const Text(
-                'Подойдёт код из Чистого Листа или из YouBoost — семья общая.',
+                'Код приглашения взрослого или код телефона ребёнка. Подойдёт и код из YouBoost.',
                 style: TextStyle(color: Pen.pencil),
               ),
               FamilyCodeField(

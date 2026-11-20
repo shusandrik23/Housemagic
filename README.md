@@ -7,9 +7,10 @@
 **Стек:** Flutter (Android, iOS, Web), Firebase Auth (Google), Cloud Firestore,
 Cloud Storage, `provider`.
 
-> Аккаунт и семья **общие с YouBoost** (репозиторий Poleznieprivichki): один
-> Firebase-проект `poleznie-privichki`. Подробности в
-> [docs/YOUBOOST_INTEGRATION.md](docs/YOUBOOST_INTEGRATION.md).
+> Приложение **полностью автономно**: YouBoost для него не нужен. Если
+> человек пользуется и YouBoost (репозиторий Poleznieprivichki), аккаунт и
+> семья у них общие, потому что Firebase-проект один, `poleznie-privichki`.
+> Подробности в [docs/YOUBOOST_INTEGRATION.md](docs/YOUBOOST_INTEGRATION.md).
 
 ## Возможности
 

@@ -129,8 +129,8 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                'Подходят коды из Чистого Листа и из YouBoost. '
-                                'Взрослым: войдите через Google — после входа вы попадёте в семью по этому коду.',
+                                'Взрослым: войдите через Google — после входа вы попадёте в семью по этому коду. '
+                                '(Подойдёт и код из YouBoost, если вы им пользуетесь.)',
                                 style: TextStyle(color: Pen.pencil),
                               ),
                               const SizedBox(height: 12),

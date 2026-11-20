@@ -164,10 +164,11 @@ class _InviteCardState extends State<_InviteCard> {
               '🏡 ${h.name}',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Pen.blue),
             ),
-            const Text(
-              'Семья общая с YouBoost: состав и дети синхронизируются.',
-              style: TextStyle(color: Pen.green, fontSize: 12),
-            ),
+            if (h.usesYouBoost)
+              const Text(
+                'Семья общая с YouBoost: состав и дети синхронизируются.',
+                style: TextStyle(color: Pen.green, fontSize: 12),
+              ),
             const SizedBox(height: 8),
             if (h.hasActiveInvite) ...[
               const Text(
@@ -329,8 +330,9 @@ class ChildCard extends StatelessWidget {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'На телефоне ребёнка откройте «Чистый Лист» (или YouBoost Kids) → '
+              Text(
+                'На телефоне ребёнка откройте «Чистый Лист»'
+                '${session.household?.usesYouBoost == true ? ' (или YouBoost Kids)' : ''} → '
                 '«Войти по коду» и введите код. Он действует сутки:',
               ),
               const SizedBox(height: 16),

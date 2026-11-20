@@ -131,13 +131,14 @@ class _AddChildSheetState extends State<AddChildSheet> {
                   style: TextStyle(color: Pen.pencil),
                 ),
               ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Text(
-                'Ребёнок появится и в YouBoost — семья общая.',
-                style: TextStyle(color: Pen.green, fontSize: 12),
+            if (context.read<SessionController>().household?.usesYouBoost ?? false)
+              const Padding(
+                padding: EdgeInsets.only(top: 8),
+                child: Text(
+                  'Ребёнок появится и в YouBoost — семья общая.',
+                  style: TextStyle(color: Pen.green, fontSize: 12),
+                ),
               ),
-            ),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
