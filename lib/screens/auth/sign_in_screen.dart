@@ -86,7 +86,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     const Text(
                       'Чистый Лист',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.w800, color: Pen.blue),
+                      style: TextStyle(
+                        fontFamily: Fonts.hand,
+                        fontSize: 52,
+                        fontWeight: FontWeight.w700,
+                        color: Pen.blue,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     const Text(

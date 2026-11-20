@@ -40,7 +40,7 @@ class _GridPainter extends CustomPainter {
       final margin = Paint()
         ..color = Pen.margin
         ..strokeWidth = 1.4;
-      final x = cell * 2;
+      final x = cell * 0.5;
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), margin);
     }
   }
@@ -58,10 +58,18 @@ class PenTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(top: 12, bottom: 6),
+    padding: const EdgeInsets.only(top: 12, bottom: 4),
     child: Text(
       text,
-      style: TextStyle(color: color, fontSize: size, fontWeight: FontWeight.w700, height: 1.2),
+      style: TextStyle(
+        fontFamily: Fonts.hand,
+        fontFamilyFallback: Fonts.fallback,
+        color: color,
+        // Caveat визуально мельче — увеличиваем кегль.
+        fontSize: size * 1.35,
+        fontWeight: FontWeight.w700,
+        height: 1.1,
+      ),
     ),
   );
 }

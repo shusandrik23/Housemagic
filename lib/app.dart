@@ -11,8 +11,11 @@ import 'state/session_controller.dart';
 import 'widgets/notebook.dart';
 
 class CleanPageApp extends StatelessWidget {
-  const CleanPageApp({super.key, required this.services});
+  const CleanPageApp({super.key, required this.services, this.demoNote});
   final AppServices services;
+
+  /// Текст полоски «Демо-версия» сверху экрана (только в демо-сборке).
+  final String? demoNote;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +35,33 @@ class CleanPageApp extends StatelessWidget {
         title: 'Чистый Лист',
         debugShowCheckedModeBanner: false,
         theme: buildNotebookTheme(),
+        builder: demoNote == null
+            ? null
+            : (context, child) => Column(
+                children: [
+                  Material(
+                    color: Pen.sticker,
+                    child: SafeArea(
+                      bottom: false,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        child: Text(
+                          demoNote!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 12, color: Color(0xFF5D4600)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      child: child!,
+                    ),
+                  ),
+                ],
+              ),
         home: const RootSwitch(),
       ),
     );

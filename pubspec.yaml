@@ -46,6 +46,9 @@ dependencies:
   shared_preferences: ^2.5.6
   local_auth: ^3.0.2
   intl: ^0.20.3
+  # Демо-режим (lib/main_demo.dart): база и вход в памяти браузера.
+  fake_cloud_firestore: ^4.5.0
+  firebase_auth_mocks: ^0.16.0
 
 dev_dependencies:
   flutter_test:
@@ -57,8 +60,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
-  fake_cloud_firestore: ^4.5.0
-  firebase_auth_mocks: ^0.16.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -70,6 +71,24 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-ExtraBold.ttf
+          weight: 800
+    - family: Caveat
+      fonts:
+        - asset: assets/fonts/Caveat-Bold.ttf
+          weight: 700
+    # Подмножество Noto Color Emoji (только используемые в приложении символы),
+    # чтобы эмодзи работали на вебе без загрузки шрифтов с серверов Google.
+    - family: NotoColorEmoji
+      fonts:
+        - asset: assets/fonts/NotoColorEmoji-subset.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

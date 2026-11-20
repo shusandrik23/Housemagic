@@ -35,7 +35,7 @@ class FamilyScreen extends StatelessWidget {
             for (final m in session.members) _MemberTile(member: m, isMe: m.uid == session.uid),
             Row(
               children: [
-                const Expanded(child: PenTitle('Дети · Академия Юных Хранителей')),
+                const Expanded(child: PenTitle('Дети')),
                 if (session.isParent)
                   TextButton.icon(
                     key: const ValueKey('add-child'),
@@ -279,8 +279,12 @@ class ChildCard extends StatelessWidget {
               spacing: 8,
               runSpacing: 4,
               children: [
-                FilledButton.tonalIcon(
+                FilledButton.icon(
                   key: ValueKey('enter-child-${child.id}'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Pen.sticker,
+                    foregroundColor: const Color(0xFF5D4600),
+                  ),
                   onPressed: () => session.enterChildMode(child.id),
                   icon: const Text('🛡'),
                   label: const Text('Детский режим'),

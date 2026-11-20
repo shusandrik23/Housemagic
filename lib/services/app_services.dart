@@ -29,6 +29,7 @@ class AppServices {
     required FirebaseAuth auth,
     required FirebaseFirestore db,
     BiometricService? biometrics,
+    PhotoService? photos,
   }) => AppServices(
     auth: AuthService(auth),
     users: UserRepository(db),

@@ -1,6 +1,15 @@
 import 'package:material_ui/material_ui.dart';
 
 /// Эстетика школьной тетради в клетку: синяя, красная, зелёная ручки.
+/// Шрифты: Nunito — основной текст, Caveat — «рукописные» заголовки,
+/// NotoColorEmoji — эмодзи (подмножество, встроено в приложение).
+class Fonts {
+  Fonts._();
+  static const body = 'Nunito';
+  static const hand = 'Caveat';
+  static const fallback = ['NotoColorEmoji'];
+}
+
 class Pen {
   Pen._();
   static const blue = Color(0xFF1F4FA3);
@@ -23,6 +32,8 @@ ThemeData buildNotebookTheme() {
     surface: Pen.paper,
   );
   return ThemeData(
+    fontFamily: Fonts.body,
+    fontFamilyFallback: Fonts.fallback,
     colorScheme: scheme,
     scaffoldBackgroundColor: Pen.paper,
     appBarTheme: const AppBarTheme(
@@ -31,8 +42,10 @@ ThemeData buildNotebookTheme() {
       elevation: 0,
       centerTitle: false,
       titleTextStyle: TextStyle(
+        fontFamily: Fonts.hand,
+        fontFamilyFallback: Fonts.fallback,
         color: Pen.blue,
-        fontSize: 22,
+        fontSize: 30,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.3,
       ),

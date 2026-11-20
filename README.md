@@ -72,6 +72,18 @@ firebase/        правила Firestore (фрагмент для общего 
 test/            логика, репозитории (fake_cloud_firestore), сценарии UI
 ```
 
+## Демо-версия
+
+`lib/main_demo.dart` запускает приложение без Firebase. База и вход живут в
+памяти вкладки браузера (`fake_cloud_firestore`, `firebase_auth_mocks`), семья
+«Дом Ивановых» уже заполнена тестовыми данными, PIN родителя `1234`.
+
+```bash
+flutter run -d chrome -t lib/main_demo.dart
+# сборка для публикации (debug: заглушки Firebase не работают в release-сборке)
+flutter build web -t lib/main_demo.dart --debug --no-web-resources-cdn -o build/demo
+```
+
 ## Запуск
 
 ```bash
