@@ -1,0 +1,57 @@
+    // ===================== Чистый Лист (CleanPage, репозиторий Housemagic) =====================
+    // ВНИМАНИЕ: это фрагмент, а не самостоятельный файл. Firebase-проект
+    // `poleznie-privichki` общий с YouBoost, а файл правил у проекта один —
+    // вставьте этот блок в firestore.rules репозитория Poleznieprivichki
+    // СРАЗУ ПОСЛЕ раздела «YouBoost Kids» (используются его функции
+    // kidsMemberDoc / kidsMember / kidsParent) и опубликуйте оттуда.
+    // Отдельная публикация из Housemagic затёрла бы правила YouBoost.
+    //
+    // Надстройка над общей семьёй: households/{fid} — тот же id, что kidsFamilies/{fid}.
+    function cpKidOfDevice(fid) { return get(kidsMemberDoc(fid)).data.get('kidId', ''); }
+
+    match /households/{fid} {
+      allow read: if kidsMember(fid);
+      allow create, update: if kidsParent(fid);
+      allow delete: if signedIn()
+        && get(/databases/$(db)/documents/kidsFamilies/$(fid)).data.owner == me();
+
+      // Игровая статистика взрослого (питомец, пуговицы, серия) — пишет только он сам.
+      match /members/{uid} {
+        allow read: if kidsMember(fid);
+        allow write: if kidsParent(fid) && uid == me();
+      }
+
+      // Надстройка ребёнка (возрастная группа, питомец, золотые пуговицы) — только родители.
+      match /children/{kid} {
+        allow read: if kidsMember(fid);
+        allow write: if kidsParent(fid);
+      }
+
+      // Квесты: родители — всё; телефон ребёнка — только отправить свой квест на проверку.
+      match /child_quests/{qid} {
+        allow read: if kidsMember(fid);
+        allow create, delete: if kidsParent(fid);
+        allow update: if kidsParent(fid)
+          || (kidsMember(fid)
+            && cpKidOfDevice(fid) == resource.data.childId
+            && resource.data.status == 'todo'
+            && request.resource.data.status == 'pending_approval'
+            && request.resource.data.diff(resource.data).affectedKeys()
+                 .hasOnly(['status', 'photoUrl', 'parentComment', 'submittedAt']));
+      }
+
+      match /victory_album/{pid} {
+        allow read: if kidsMember(fid);
+        allow write: if kidsParent(fid);
+      }
+
+      // Списки покупок и архив походов в магазин — взрослые участники семьи.
+      match /shopping_items/{iid} {
+        allow read: if kidsMember(fid);
+        allow write: if kidsParent(fid);
+      }
+      match /shopping_trips/{tid} {
+        allow read: if kidsMember(fid);
+        allow create: if kidsParent(fid);
+      }
+    }

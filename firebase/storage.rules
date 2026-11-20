@@ -1,0 +1,22 @@
+rules_version = '2';
+
+// Cloud Storage для «Чистого Листа»: фото «После» детских квестов.
+// YouBoost сейчас Storage не использует, поэтому этот файл можно публиковать
+// целиком (Firebase Console → Storage → Rules). Если YouBoost начнёт
+// хранить файлы в Storage — объедините правила в одном файле.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function familyMember(fid) {
+      return request.auth != null
+        && firestore.exists(/databases/(default)/documents/kidsFamilies/$(fid)/members/$(request.auth.uid));
+    }
+
+    match /households/{fid}/quests/{questId}/{file} {
+      allow read: if familyMember(fid);
+      allow create: if familyMember(fid)
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if familyMember(fid);
+    }
+  }
+}
