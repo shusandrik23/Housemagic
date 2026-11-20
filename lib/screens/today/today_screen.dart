@@ -10,6 +10,7 @@ import '../../state/session_controller.dart';
 import '../../widgets/notebook.dart';
 import '../../widgets/supply_picker_sheet.dart';
 import '../family/approvals_screen.dart';
+import 'daily_cards.dart';
 
 /// Разворот «Сегодня»: стикер проверки квестов, 20-минутная зона,
 /// карточка «Ремонт по дому».
@@ -81,7 +82,14 @@ class _TodayScreenState extends State<TodayScreen> {
                 );
               },
             ),
-            const SizedBox(height: 8),
+            DailyProgressScope(
+              builder: (context, progress) => Column(
+                children: [
+                  MiniTaskCard(progress: progress),
+                  DailyRulesCard(progress: progress),
+                ],
+              ),
+            ),
             ZoneTimerCard(zone: zone),
             const SizedBox(height: 8),
             const RepairCard(),

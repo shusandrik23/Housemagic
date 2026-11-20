@@ -1,3 +1,4 @@
+import '../core/daily.dart';
 import 'firestore_utils.dart';
 
 /// Дом = общая семья YouBoost (`kidsFamilies/{fid}`) + надстройка
@@ -14,6 +15,7 @@ class Household {
     required this.rooms,
     required this.isConfigured,
     this.usesYouBoost = false,
+    this.dailyRules = DailyRule.defaults,
   });
 
   final String id;
@@ -32,6 +34,9 @@ class Household {
   /// Семьёй пользуются и в YouBoost. Только тогда интерфейс упоминает
   /// YouBoost. Тот, у кого установлен один Чистый Лист, этих подсказок не видит.
   final bool usesYouBoost;
+
+  /// Ежедневные правила дома (по умолчанию — [DailyRule.defaults]).
+  final List<DailyRule> dailyRules;
 
   bool get hasPin => (parentPinHash ?? '').isNotEmpty;
 
@@ -61,6 +66,9 @@ class Household {
       modifiers: readStringList(e['modifiers']),
       rooms: readStringList(e['rooms']),
       isConfigured: ext != null,
+      dailyRules: e['dailyRules'] is List
+          ? (e['dailyRules'] as List).map(DailyRule.fromMap).whereType<DailyRule>().toList()
+          : DailyRule.defaults,
       // Признаки YouBoost: семья создана там, есть награды/вызовы YouBoost
       // или у детей заведены привычки.
       usesYouBoost:

@@ -101,11 +101,11 @@ class QuestRepository {
         'approvedAt': FieldValue.serverTimestamp(),
       });
       // set(merge) — надстройки может ещё не быть, если ребёнка создали в YouBoost.
-      tx.set(childRef, {
+      txUpsert(tx, childRef, childSnap, {
         'goldButtons': FieldValue.increment(quest.rewardButtons),
         'streakCount': streak,
         'lastQuestDay': Streak.dayKey(now),
-      }, SetOptions(merge: true));
+      });
       if ((quest.photoUrl ?? '').isNotEmpty) {
         tx.set(paths.album(householdId).doc(), {
           'childId': quest.childId,

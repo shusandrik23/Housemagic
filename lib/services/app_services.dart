@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../repositories/children_repository.dart';
+import '../repositories/daily_repository.dart';
 import '../repositories/household_repository.dart';
 import '../repositories/quest_repository.dart';
 import '../repositories/shopping_repository.dart';
@@ -20,6 +21,7 @@ class AppServices {
     required this.children,
     required this.quests,
     required this.shopping,
+    required this.daily,
     required this.photos,
     required this.biometrics,
   });
@@ -37,7 +39,8 @@ class AppServices {
     children: ChildrenRepository(db),
     quests: QuestRepository(db),
     shopping: ShoppingRepository(db),
-    photos: PhotoService(),
+    daily: DailyRepository(db),
+    photos: photos ?? PhotoService(),
     biometrics: biometrics ?? BiometricService(),
   );
 
@@ -50,6 +53,7 @@ class AppServices {
       children: ChildrenRepository(db),
       quests: QuestRepository(db),
       shopping: ShoppingRepository(db),
+      daily: DailyRepository(db),
       photos: PhotoService(storage: FirebaseStorage.instance),
       biometrics: BiometricService(),
     );
@@ -61,6 +65,7 @@ class AppServices {
   final ChildrenRepository children;
   final QuestRepository quests;
   final ShoppingRepository shopping;
+  final DailyRepository daily;
   final PhotoService photos;
   final BiometricService biometrics;
 }

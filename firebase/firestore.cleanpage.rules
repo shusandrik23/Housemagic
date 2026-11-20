@@ -19,6 +19,12 @@
       match /members/{uid} {
         allow read: if kidsMember(fid);
         allow write: if kidsParent(fid) && uid == me();
+
+        // Отметки ежедневных правил и мини-задачи дня — каждый ведёт только свои.
+        match /days/{day} {
+          allow read: if kidsMember(fid);
+          allow write: if kidsParent(fid) && uid == me();
+        }
       }
 
       // Надстройка ребёнка (возрастная группа, питомец, золотые пуговицы) — только родители.

@@ -46,6 +46,21 @@ class Paths {
       household(fid).collection('shopping_trips');
 }
 
+/// Запись в транзакции без `SetOptions(merge)`: `update`, если документ
+/// уже есть, иначе `set`. Так поведение одинаково в Firestore и в тестах.
+void txUpsert(
+  Transaction tx,
+  DocumentReference<Map<String, dynamic>> ref,
+  DocumentSnapshot<Map<String, dynamic>> snap,
+  Map<String, dynamic> data,
+) {
+  if (snap.exists) {
+    tx.update(ref, data);
+  } else {
+    tx.set(ref, data);
+  }
+}
+
 class FamilyRole {
   static const parent = 'parent';
   static const child = 'child';

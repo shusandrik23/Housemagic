@@ -6,6 +6,7 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../core/codes.dart';
+import '../core/streak.dart';
 import '../services/app_services.dart';
 import '../services/photo_service.dart';
 
@@ -118,6 +119,12 @@ class DemoBackend {
       'wishes': [
         {'title': 'Мороженое', 'cost': 20},
       ],
+    });
+
+    // Отметки Ани за сегодня: часть утренних правил уже выполнена.
+    set('households/$familyId/members/$momUid/days/${Streak.dayKey(now)}', {
+      'rulesDone': ['bed', 'dressed'],
+      'miniDone': false,
     });
 
     // Квесты.

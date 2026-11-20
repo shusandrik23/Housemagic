@@ -65,6 +65,14 @@ b.set(doc(mom, 'households', fid, 'children', 'kid1'), { goldButtons: increment(
 b.set(doc(mom, 'households', fid, 'victory_album', 'p1'), { childId: 'kid1', childName: 'Миша', questTitle: 'Носки', photoUrl: 'https://x' });
 await ok('«Принять ✨»: статус, пуговицы, альбом', b.commit());
 
+// 5b. Ежедневные правила и мини-задача
+await ok('мама отмечает свои правила дня', setDoc(doc(mom, 'households', fid, 'members', 'mom', 'days', '2026-11-20'), { rulesDone: ['bed'], allRulesRewarded: false }));
+await no('папа не отмечает правила за маму', setDoc(doc(dad, 'households', fid, 'members', 'mom', 'days', '2026-11-20'), { rulesDone: ['bed', 'sink'] }));
+await ok('папа читает отметки мамы', getDoc(doc(dad, 'households', fid, 'members', 'mom', 'days', '2026-11-20')));
+await no('посторонний не читает отметки', getDoc(doc(stranger, 'households', fid, 'members', 'mom', 'days', '2026-11-20')));
+await ok('родитель меняет правила дома', setDoc(doc(dad, 'households', fid), { dailyRules: [{ id: 'x', title: 'Вынести мусор', period: 'evening' }] }, { merge: true }));
+await no('телефон ребёнка не меняет правила дома', setDoc(doc(kidPhone, 'households', fid), { dailyRules: [] }, { merge: true }));
+
 // 6. Покупки
 await ok('родитель добавляет покупку', setDoc(doc(dad, 'households', fid, 'shopping_items', 'i1'), { listType: 'household_supplies', title: 'Губки', isBought: true }));
 await ok('список читается по запросу', getDocs(query(collection(mom, 'households', fid, 'shopping_items'), where('listType', '==', 'household_supplies'))));
