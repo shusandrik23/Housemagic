@@ -110,6 +110,8 @@ class _ApprovalsScreenState extends State<ApprovalsScreen> {
                                 borderRadius: BorderRadius.circular(6),
                                 child: Image.network(
                                   q.photoUrl!,
+                                  // На вебе — через <img>: фото из Storage без настройки CORS бакета.
+                                  webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                                   height: 220,
                                   width: double.infinity,
                                   fit: BoxFit.cover,

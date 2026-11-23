@@ -56,6 +56,8 @@ class _AlbumScreenState extends State<AlbumScreen> {
                       Expanded(
                         child: Image.network(
                           p.photoUrl,
+                          // На вебе — через <img>: фото из Storage без настройки CORS бакета.
+                          webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                           fit: BoxFit.cover,
                           errorBuilder: (_, _, _) => const Center(child: Text('📷')),
                         ),

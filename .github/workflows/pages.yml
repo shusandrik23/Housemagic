@@ -1,0 +1,62 @@
+# Сборка и публикация веб-версии на GitHub Pages при каждом пуше в main.
+#   /            — приложение с Firebase (проект poleznie-privichki)
+#   /demo/       — демо без Firebase (данные в памяти вкладки)
+# Один раз: Settings → Pages → Source: «GitHub Actions».
+name: Веб-версия (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.50.0
+          cache: true
+
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+
+      - name: Сборка приложения
+        run: |
+          BASE="/${{ github.event.repository.name }}/"
+          flutter build web --release --base-href "$BASE"
+
+      - name: Сборка демо
+        run: |
+          BASE="/${{ github.event.repository.name }}/demo/"
+          # debug: заглушки Firebase (fake_cloud_firestore) не работают в release-сборке
+          flutter build web -t lib/main_demo.dart --debug --no-web-resources-cdn --base-href "$BASE" -o build/demo_site
+          rm -rf build/web/demo && cp -r build/demo_site build/web/demo
+          find build/web -name "*.symbols" -delete
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

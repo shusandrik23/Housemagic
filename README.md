@@ -72,6 +72,14 @@ firebase/        правила Firestore (фрагмент для общего 
 test/            логика, репозитории (fake_cloud_firestore), сценарии UI
 ```
 
+## Веб-версия
+
+- приложение: https://shusandrik23.github.io/Housemagic/
+- демо: https://shusandrik23.github.io/Housemagic/demo/
+
+Публикуется автоматически при пуше в `main`. Что настроить один раз —
+в [docs/WEB_LAUNCH.md](docs/WEB_LAUNCH.md).
+
 ## Демо-версия
 
 `lib/main_demo.dart` запускает приложение без Firebase. База и вход живут в
